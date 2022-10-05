@@ -1,16 +1,17 @@
 import React,{ FC } from 'react';
 import {ResultProps} from '../types/types.tsx'
 
-const Result:FC<ResultProps> = ({score,quiz,setQuiz,setCurrentQuestion}) => {
-  const restart = () => {
+const Result:FC<ResultProps> = ({score,quiz,setScore,setQuiz,setCurrentQuestion}) => {
+  const restart = ():void => {
     setCurrentQuestion(0)
     setQuiz([])
+    setScore(0)
   }
     
-  const correctAns = score/2;
-  const incorrectAns = quiz.length - correctAns
+  const correctAns:number = score/2;
+  const incorrectAns:number = quiz.length - correctAns
    return (
-       <div className='start-box' >
+       <div className='card'>
        <h1>Score : {score} </h1>
         <h2>  Total Quiz : {quiz.length} </h2>
         <h2>  Correct Answer : {correctAns} </h2>

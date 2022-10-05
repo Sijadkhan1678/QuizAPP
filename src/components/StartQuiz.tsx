@@ -1,26 +1,31 @@
-import React,{FC,FormEvent} from 'react'
+import React,{FC,ChangeEvent} from 'react'
 import {StartQuizProps} from '../types/types'
+import Loading from './Loading.tsx'
 
-const StartQuiz:FC<StartQuizProps> = ({startQuiz,setStartQuiz,submit}) => {
+const StartQuiz:FC<StartQuizProps> = ({loading,startQuiz,setStartQuiz,submit}) => {
+  // function pass user selected level to api 
   const setLevel = (level:string): void =>{ 
     setStartQuiz({...startQuiz,level})
   }
-  const selectQuantity = (e:FormEvent<HTMLSelectElement>):void => {
+  // function user selected total number of quiz pass to api
+  const selectQuantity = (e:ChangeEvent<HTMLSelectElement>):void => {
   setStartQuiz({...startQuiz,totalQuiz: e.target.value})
    
   }
-  console.log('straquiz',startQuiz)
+  
   const level = startQuiz.level
-    return(
-       <div className='start-box'>
+  
+    return (
+      !loading ? 
+       <div className='card'>
         <h2> Start Quiz </h2>
         <select onChange={selectQuantity}>
+        
         <option value=''> Select Quiz Number</option>
         <option value={5}>5 </option>
         <option value={10}>10 </option>
         <option value={15}>15 </option>
         <option value={20}>20 </option>
-        
         </select>
         
         <h2> Select Level </h2>
@@ -29,7 +34,8 @@ const StartQuiz:FC<StartQuizProps> = ({startQuiz,setStartQuiz,submit}) => {
         <p onClick={()=>setLevel('hard')} className={level === 'hard' ? 'selected':''}>hard </p>
         
         <button onClick={()=>submit()}> Start Quiz </button>
-       </div>
+       </div>:
+       <Loading />
       )
 }
 export default StartQuiz

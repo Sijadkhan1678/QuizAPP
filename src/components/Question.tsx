@@ -1,39 +1,55 @@
-import React,{FC} from 'react'
-import {QuestionProps} from '../types/types.tsx'
+import React, {
+  FC,
+  useState
+} from 'react'
+import {
+  QuestionProps
+} from '../types/types.tsx'
 
-const Question:FC<QuestionProps> = ({quiz,currentQuestion,setCurrentQuestion,selectedAns,setSelectedAns,setScore}) => {
+const Question: FC < QuestionProps > = ({ quiz, currentQuestion, setCurrentQuestion, selectedAns, setSelectedAns, score, setScore
+}) => {
   
-  const {question,answer,options} = quiz[currentQuestion]
+  const [selectedOpt,
+    setSelectedopt] = useState(null)
+  const { question , answer, options } = quiz[currentQuestion]
   
-const isSelected = () => {
-    if(selectedAns) {setCurrentQuestion(++currentQuestion)}
+  const  selectOption = (option:string | number):void => {
+
+    setSelectedAns(option)
+    setSelectedopt(option)
+
   }
-  
-  if(selectedAns === answer){
-   setScore(score+2)
+
+  const next = ():void => {
+    if (selectedOpt === selectedAns) {
+      setCurrentQuestion(++currentQuestion)}
+
+    if (selectedAns === answer) {
+
+      setScore(2+score)
+    }
   }
-  
-   return(
-       <div className='start-box'>
-       <h2>Quizzes {currentQuestion+1} of 20 </h2>
+
+  return(
+    <div className='card'>
+       <h2>Quizzes {currentQuestion+1} of {quiz.length} </h2>
          <h3>
             {question}
          </h3>
-        {options.map((option:string,index:number) =>(
-        <p
+        {options.map((option: string, index: number) =>(
+      <p
         key={index}
-        
-        onClick={()=>setSelectedAns(option)}
-        className={selectedAns=== option ? 'selected':''}>
+        onClick={()=>selectOption(option)}
+        className={selectedAns === option ? 'selected': ''}>
         {option}
-        </p>))
-        }
-        
-         <button 
-         onClick={isSelected}>
+      </p>
+    ))
+      }
+         <button
+        onClick={()=>next()}>
          Next
          </button>
-       </div>
-     )
+    </div>
+  )
 }
 export default Question

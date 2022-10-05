@@ -1,7 +1,4 @@
-import React, {
-  useEffect,
-  useState
-} from 'react';
+import React, { FC , useState } from 'react';
 import './App.css'
 import {
   QuestionType,
@@ -12,13 +9,14 @@ import StartQuiz from './components/StartQuiz.tsx'
 import Question from './components/Question.tsx'
 import Result from './components/Result.tsx'
 
-const App: React.FC = () => {
+const App:FC = () => {
   const [startQuiz,
     setStartQuiz] = useState < StartQuizType > ({
       totalQuiz: null,
       level: ''
     })
-
+  const [loading,
+    setLoading] = useState < boolean > (false)
   const [quiz,
     setQuiz] = useState < QuestionType[] > ([])
 
@@ -30,50 +28,40 @@ const App: React.FC = () => {
   const [score,
     setScore] = useState < number > (0)
 
-  const {
-    totalQuiz,
-    level
-  } = startQuiz
-  console.log('quiz and level', level, totalQuiz)
-  console.log('slected ans', selectedAns)
-  /*useEffect(()=> {
-    const quizzes = getQuizzes(12, 'easy')
-   // console.log(quizzes[0])
-  }, [])*/
-  //const {answer} = quiz[selectedAns]
-  //if (//quiz[currentQuestion].
- /*if( answer === selectedAns) {
-    setScore(score+2)
-  }*/
+  const { totalQuiz, level} = startQuiz
+
   const onSubmit = async () => {
-    console.log('submit')
+    
     if (!totalQuiz || level === '') {
-      alert('please select level and no of questions')
+        alert('please select level and no of questions')
 
     } else {
-    const quizzes:QuestionType[] = await getQuizzes(totalQuiz, level)
-    console.log('api quizzes',quizzes)
-    setQuiz(quizzes)
+      setLoading(true)
+      const quizzes: QuestionType[] = await getQuizzes(totalQuiz, level)
+
+      setQuiz(quizzes)
+      setLoading(false)
     }
 
   }
-  
-   if(currentQuestion === quiz.length-1){
+
+  if (currentQuestion >= 5 && currentQuestion === quiz.length) {
     return(<div className='container'>
      <h2> QUIZY APP </h2>
       <Result score={score}
-              quiz={quiz}
-              setQuiz={setQuiz}
-              setCurrentQuestion={setCurrentQuestion}/>
+      quiz={quiz}
+      setScore={setScore}
+      setQuiz={setQuiz}
+      setCurrentQuestion={setCurrentQuestion} />
     </div>
     )
   }
-  console.log('quiz length',quiz.length)
+  
   if (!quiz.length) {
     return(
       <div className='container'>
         <h2> QUIZY APP </h2>
-        <StartQuiz startQuiz={startQuiz}
+        <StartQuiz loading={loading} startQuiz={startQuiz}
         setStartQuiz={setStartQuiz}
         submit={onSubmit} />
       </div>
@@ -83,11 +71,14 @@ const App: React.FC = () => {
     return (
       <div className='container'>
       <h2> QUIZY APP </h2>
-        <Question quiz={quiz}
+        <Question loading={loading}
+        quiz={quiz}
         currentQuestion={currentQuestion}
         setCurrentQuestion={setCurrentQuestion}
         selectedAns={selectedAns}
-        setSelectedAns={setSelectedAns} />
+        setSelectedAns={setSelectedAns}
+        score={score}
+        setScore={setScore} />
       </div>
 
     )
