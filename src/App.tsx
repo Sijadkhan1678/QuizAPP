@@ -24,7 +24,7 @@ const App:FC = () => {
     setCurrentQuestion] = useState < number > (0)
 
   const [selectedAns,
-    setSelectedAns] = useState < string > (null)
+    setSelectedAns] = useState < string | number > ('')
   const [score,
     setScore] = useState < number > (0)
 
@@ -41,6 +41,10 @@ const App:FC = () => {
 
       setQuiz(quizzes)
       setLoading(false)
+      setStartQuiz({
+        totalQuiz: null,
+        level: ''
+      })
     }
 
   }

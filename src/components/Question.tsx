@@ -10,7 +10,7 @@ const Question: FC < QuestionProps > = ({ quiz, currentQuestion, setCurrentQuest
 }) => {
   
   const [selectedOpt,
-    setSelectedopt] = useState(null)
+    setSelectedopt] = useState<string | number>(2)
   const { question , answer, options } = quiz[currentQuestion]
   
   const  selectOption = (option:string | number):void => {
@@ -22,7 +22,10 @@ const Question: FC < QuestionProps > = ({ quiz, currentQuestion, setCurrentQuest
 
   const next = ():void => {
     if (selectedOpt === selectedAns) {
-      setCurrentQuestion(++currentQuestion)}
+      setCurrentQuestion(++currentQuestion)
+      
+      setSelectedAns(null)
+    }
 
     if (selectedAns === answer) {
 

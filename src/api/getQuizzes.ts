@@ -1,4 +1,9 @@
 import  {Quiz,Question} from '../types/types';
+
+const shuffling = (array:string[])=> {
+return [...array].sort(()=> Math.random() - 0.5)
+}
+
 const getQuizzes = async (totalQuestions:number,level:string): promise<Question[]> => {
     const res = await fetch(`https://opentdb.com/api.php?amount=${totalQuestions}&difficulty=${level}&type=multiple`)
     const {results}= await res.json();
@@ -7,7 +12,7 @@ const getQuizzes = async (totalQuestions:number,level:string): promise<Question[
       return {
         question: quiz.question,
         answer : quiz.correct_answer,
-        options: quiz.incorrect_answers.concat(quiz.correct_answer)
+        options: shuffling(quiz.incorrect_answers.concat(quiz.correct_answer))
     }
       
     })
